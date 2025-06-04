@@ -1,0 +1,29 @@
+# Dependencies
+node_modules
+npm-debug.log*
+
+# Environment files (add via Vercel dashboard)
+.env
+.env.local
+.env.*.local
+
+# Development files
+.husky
+.eslintrc.json
+.editorconfig
+
+# Git
+.git
+.gitignore
+
+# Logs
+logs
+*.log
+
+# IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+Thumbs.db 

@@ -53,20 +53,22 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(PORT, () => {
-    console.log('🚀 ====================================');
-    console.log('🛠️  Sleep Tracker API v1.0.0');
-    console.log(`🌍 Server running on port ${PORT}`);
-    console.log('📊 Health check: /v1/healthcheck');
-    console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log('🚀 ====================================');
-});
-
-process.on('unhandledRejection', (err) => {
-    console.log('❌ Unhandled Promise Rejection:', err.message);
-    server.close(() => {
-        process.exit(1);
+if (process.env.NODE_ENV !== 'production') {
+    const server = app.listen(PORT, () => {
+        console.log('🚀 ====================================');
+        console.log('🛠️  Sleep Tracker API v1.0.0');
+        console.log(`🌍 Server running on port ${PORT}`);
+        console.log('📊 Health check: /v1/healthcheck');
+        console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
+        console.log('🚀 ====================================');
     });
-});
+
+    process.on('unhandledRejection', (err) => {
+        console.log('❌ Unhandled Promise Rejection:', err.message);
+        server.close(() => {
+            process.exit(1);
+        });
+    });
+}
 
 module.exports = app; 

@@ -30,7 +30,6 @@ const createSleep = async (req, res) => {
 
         return sendSuccess(res, 'Sleep entry created successfully', sleepEntry, 201);
     } catch (error) {
-        console.error('Create sleep error:', error);
         return sendError(res, 'Failed to create sleep entry', error.message);
     }
 };
@@ -47,7 +46,6 @@ const getSleepEntries = async (req, res) => {
 
         return sendSuccess(res, 'Sleep entries retrieved successfully', sleepEntries);
     } catch (error) {
-        console.error('Get sleep entries error:', error);
         return sendError(res, 'Failed to get sleep entries', error.message);
     }
 };
@@ -70,7 +68,6 @@ const getSleepEntry = async (req, res) => {
 
         return sendSuccess(res, 'Sleep entry retrieved successfully', sleepEntry);
     } catch (error) {
-        console.error('Get sleep entry error:', error);
         return sendError(res, 'Failed to get sleep entry', error.message);
     }
 };
@@ -104,7 +101,6 @@ const updateSleepEntry = async (req, res) => {
 
         return sendSuccess(res, 'Sleep entry updated successfully', sleepEntry);
     } catch (error) {
-        console.error('Update sleep entry error:', error);
         return sendError(res, 'Failed to update sleep entry', error.message);
     }
 };
@@ -129,7 +125,6 @@ const deleteSleepEntry = async (req, res) => {
 
         return sendSuccess(res, 'Sleep entry deleted successfully');
     } catch (error) {
-        console.error('Delete sleep entry error:', error);
         return sendError(res, 'Failed to delete sleep entry', error.message);
     }
 };

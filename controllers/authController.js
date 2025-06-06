@@ -28,7 +28,6 @@ const register = async (req, res) => {
 
         sendTokenResponse(user, 201, res, 'User registered successfully');
     } catch (error) {
-        console.error('Registration error:', error);
         return sendError(res, 'Registration failed', error.message);
     }
 };
@@ -64,7 +63,6 @@ const login = async (req, res) => {
 
         sendTokenResponse(user, 200, res, 'Login successful');
     } catch (error) {
-        console.error('Login error:', error);
         return sendError(res, 'Login failed', error.message);
     }
 };
@@ -89,7 +87,6 @@ const getMe = async (req, res) => {
 
         return sendSuccess(res, 'User profile retrieved successfully', userData);
     } catch (error) {
-        console.error('Get profile error:', error);
         return sendError(res, 'Failed to get user profile', error.message);
     }
 };

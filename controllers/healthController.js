@@ -62,7 +62,6 @@ const healthCheck = async (req, res) => {
                 healthcheckData.mongoDBStatus = '⚠️ MongoDB connection pending';
             }
         } catch (error) {
-            console.error('❌ Could not check MongoDB status\n', error.message);
             healthcheckData.mongoDBStatus = '❌ MongoDB connection failed';
         }
 
@@ -72,11 +71,10 @@ const healthCheck = async (req, res) => {
             healthcheckData
         );
     } catch (error) {
-        console.error('Health check error:', error);
         return sendError(res, 'Health check failed', error.message);
     }
 };
 
 module.exports = {
-    healthCheck,
+    healthCheck
 };

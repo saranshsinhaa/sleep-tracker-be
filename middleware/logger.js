@@ -33,6 +33,16 @@ const saveLogToDatabase = async (logData) => {
 };
 
 /**
+ * Checks if the request should be excluded from database logging
+ * @param {string} url - Request URL
+ * @returns {boolean} - True if should be excluded from database
+ */
+const shouldExcludeFromDatabase = (url) => {
+    const excludedPaths = ['/favicon.png', '/favicon.ico'];
+    return excludedPaths.includes(url);
+};
+
+/**
  * Logs HTTP requests with method, URL, IP address, status code, and response time
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
@@ -50,17 +60,19 @@ const logger = (req, res, next) => {
         const duration = Date.now() - start;
         console.log(`${new Date().toISOString()} - ${req.method} ${req.originalUrl} - ${res.statusCode} - ${duration}ms - IP: ${clientIP}`);
 
-        const logData = {
-            method: req.method,
-            url: req.originalUrl,
-            ip: clientIP,
-            statusCode: res.statusCode,
-            duration,
-            userAgent,
-            userId: req.user ? req.user.id : null
-        };
-        
-        saveLogToDatabase(logData);
+        if (!shouldExcludeFromDatabase(req.originalUrl)) {
+            const logData = {
+                method: req.method,
+                url: req.originalUrl,
+                ip: clientIP,
+                statusCode: res.statusCode,
+                duration,
+                userAgent,
+                userId: req.user ? req.user.id : null
+            };
+            
+            saveLogToDatabase(logData);
+        }
         
         originalEnd.call(this, chunk, encoding);
     };

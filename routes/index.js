@@ -4,13 +4,13 @@
  */
 
 const express = require('express');
-const { healthCheck } = require('../controllers/healthController');
+const healthRoutes = require('./healthRoutes');
 const authRoutes = require('./authRoutes');
 const sleepRoutes = require('./sleepRoutes');
 
 const router = express.Router();
 
-router.get('/healthcheck', healthCheck);
+router.use('/healthcheck', healthRoutes);
 router.use('/auth', authRoutes);
 router.use('/sleep', sleepRoutes);
 

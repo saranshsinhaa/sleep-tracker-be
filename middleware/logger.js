@@ -3,6 +3,8 @@
  * Logs all incoming requests with timing information
  */
 
+const Log = require('../models/Log');
+
 /**
  * Gets the real client IP address considering proxies and load balancers
  * @param {Object} req - Express request object
@@ -19,6 +21,18 @@ const getClientIP = (req) => {
 };
 
 /**
+ * Saves log entry to database
+ * @param {Object} logData - Log data to save
+ */
+const saveLogToDatabase = async (logData) => {
+    try {
+        await Log.create(logData);
+    } catch (error) {
+        // Silent fail for logging - don't break the request
+    }
+};
+
+/**
  * Logs HTTP requests with method, URL, IP address, status code, and response time
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
@@ -27,6 +41,7 @@ const getClientIP = (req) => {
 const logger = (req, res, next) => {
     const start = Date.now();
     const clientIP = getClientIP(req);
+    const userAgent = req.headers['user-agent'] || 'unknown';
 
     console.log(`${new Date().toISOString()} - ${req.method} ${req.originalUrl} - IP: ${clientIP}`);
 
@@ -34,6 +49,19 @@ const logger = (req, res, next) => {
     res.end = function(chunk, encoding) {
         const duration = Date.now() - start;
         console.log(`${new Date().toISOString()} - ${req.method} ${req.originalUrl} - ${res.statusCode} - ${duration}ms - IP: ${clientIP}`);
+
+        const logData = {
+            method: req.method,
+            url: req.originalUrl,
+            ip: clientIP,
+            statusCode: res.statusCode,
+            duration,
+            userAgent,
+            userId: req.user ? req.user.id : null
+        };
+        
+        saveLogToDatabase(logData);
+        
         originalEnd.call(this, chunk, encoding);
     };
 

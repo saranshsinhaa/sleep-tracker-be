@@ -15,6 +15,7 @@
  */
 const sendResponse = (res, statusCode, success, message, data = null, error = null) => {
     const response = {
+        status: statusCode,
         success,
         message,
         timestamp: new Date().toISOString(),

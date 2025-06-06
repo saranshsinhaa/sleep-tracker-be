@@ -17,10 +17,12 @@ const app = express();
 
 connectDB();
 
-app.use(cors({
-    origin: process.env.FRONTEND_URL || '*',
-    credentials: true
-}));
+app.use(
+    cors({
+        origin: process.env.FRONTEND_URL || '*',
+        credentials: true,
+    })
+);
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -37,12 +39,19 @@ app.get('/', (req, res) => {
         endpoints: {
             healthcheck: '/v1/healthcheck',
             auth: {
-                register: '/v1/auth/register',
-                login: '/v1/auth/login',
-                logout: '/v1/auth/logout',
-                profile: '/v1/auth/me'
-            }
-        }
+                register: 'POST /v1/auth/register',
+                login: 'POST /v1/auth/login',
+                logout: 'POST /v1/auth/logout',
+                profile: 'GET /v1/auth/me',
+            },
+            sleep: {
+                list: 'GET /v1/sleep',
+                create: 'POST /v1/sleep',
+                get: 'GET /v1/sleep/:id',
+                update: 'PUT /v1/sleep/:id',
+                delete: 'DELETE /v1/sleep/:id',
+            },
+        },
     };
     return sendSuccess(res, 'API is running', data);
 });
@@ -71,4 +80,4 @@ if (process.env.NODE_ENV !== 'production') {
     });
 }
 
-module.exports = app; 
+module.exports = app;
